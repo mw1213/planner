@@ -2,4 +2,16 @@
     <string name="app_name">planner</string>
     <string name="navigation_bar_open">Open navigation drawer</string>
     <string name="navigation_bar_close">Close navigation drawer</string>
+    <string name="Today">Check for Today</string>
+    <string name="LightCloud">LightCloud</string>
+    <string name="CustomDate">Check For Choosen Date</string>
+    <string name="DateInput">Enter date here:</string>
+    <string name="WeatherStateName">Weather state:</string>
+    <string name="WindDirectionName">Wind direction:</string>
+    <string name="DateName">Date:</string>
+    <string name="MinTempName">Temp min:</string>
+    <string name="MaxTempName">Temp max:</string>
+    <string name="CurrentTempName">Temperature:</string>
+    <string name="WindSpeedName">Wind speed:</string>
+    <string name="Humidity">Humidity:</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.agh.planner;
 
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -13,11 +14,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.agh.planner.weather.RemoteFetch;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private JSONObject weatherForecast;
 
+    public JSONObject getWeatherForecast() {
+        return weatherForecast;
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //setting up todo-list fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new TodoListFragment()).commit();
+
+        new weatherTask().execute();
     }
 
     @Override
@@ -72,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new TodoNewFormFragment()).commit();
                 break;
+            case R.id.nav_check_weather:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WeatherChecker()).commit();
+
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -86,4 +102,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    class weatherTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected String doInBackground(String... args) {
+            return RemoteFetch.getData();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObj = new JSONObject(result);
+                weatherForecast = jsonObj;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 }

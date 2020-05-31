@@ -7,5 +7,7 @@
         android:title="Plans" />
     <item android:id="@+id/nav_new_task"
         android:title="New Plan" />
+    <item android:id="@+id/nav_check_weather"
+        android:title="Check Weather" />
 </group>
 </menu>
