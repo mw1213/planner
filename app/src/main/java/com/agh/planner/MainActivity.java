@@ -1,5 +1,7 @@
 package com.agh.planner;
 
+import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -19,6 +21,8 @@ import com.agh.planner.weather.RemoteFetch;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private Receiver receiver;
+
 
     private DrawerLayout drawer;
     private JSONObject weatherForecast;
@@ -31,6 +35,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+
+        receiver = new Receiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        registerReceiver(receiver, intentFilter);
 
 
         // Navigation bar
@@ -53,6 +63,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new TodoListFragment()).commit();
 
         new weatherTask().execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     @Override
