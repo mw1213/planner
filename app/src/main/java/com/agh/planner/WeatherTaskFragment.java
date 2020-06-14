@@ -34,7 +34,7 @@ public class WeatherTaskFragment extends Fragment {
         setRetainInstance(true);
 
         // Create and execute the background task.
-        weatherTask = new WeatherTask();
+        weatherTask = new WeatherTask("https://www.metaweather.com/api/location/523920/");
         weatherTask.execute();
     }
     @Override
@@ -49,13 +49,18 @@ public class WeatherTaskFragment extends Fragment {
 
 
     class WeatherTask extends AsyncTask<String, Void, String> {
+        private String apiUrl;
+        public WeatherTask(String apiUrl) {
+            this.apiUrl = apiUrl;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         protected String doInBackground(String... args) {
-            return RemoteFetch.getData();
+            return RemoteFetch.getData(this.apiUrl);
         }
 
         @Override

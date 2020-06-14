@@ -38,16 +38,16 @@ public class DatePickerFragment extends DialogFragment
 
     public String prepareString(int year, int month, int day){
         StringBuilder result = new StringBuilder();
-        if (day<10) result.append("0");
-        result.append(day);
-        result.append("-");
-        if(month<9) result.append("0"); // month is given as 0-11, for example may -> 4
-        result.append(month+1);
-        result.append("-");
         if (year<10) result.append("0");
         if (year<100) result.append("0");
         if (year<1000) result.append("0");
         result.append(year);
+        result.append("/");
+        if(month<9) result.append("0"); // month is given as 0-11, for example may -> 4
+        result.append(month+1);
+        result.append("/");
+        if (day<10) result.append("0");
+        result.append(day);
         return result.toString();
     }
 }

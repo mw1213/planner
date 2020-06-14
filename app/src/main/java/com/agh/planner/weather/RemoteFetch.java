@@ -15,11 +15,9 @@ import com.agh.planner.R;
 
 public class RemoteFetch {
 
-    private static final String OPEN_WEATHER_MAP_API =
-            "https://www.metaweather.com/api/location/523920/";
-    public static String getData(){
+    public static String getData(String apiUrl){
         try {
-            URL url = new URL(String.format(OPEN_WEATHER_MAP_API));
+            URL url = new URL(String.format(apiUrl));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
 
