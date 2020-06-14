@@ -82,6 +82,10 @@ public class TodoNewFormFragment extends Fragment {
             String weatherType = "";
             float temp = (float) 0.0;
             try {
+                if (weatherForecast == null ) {
+                    Toast.makeText(getContext(), "date is not picked", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 JSONObject info = (JSONObject) weatherForecast.get(0);
                 weatherType = info.get("weather_state_name").toString();
                 temp = (float) info.getDouble("the_temp");
