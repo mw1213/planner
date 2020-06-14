@@ -3,14 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="176dp"
     android:layout_gravity="bottom"
-    android:padding="16dp"
-    android:background="@color/colorAccent"
+    android:padding="36dp"
+    android:background="@drawable/gradient_background"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     >
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:text="TODO app"/>
+        android:text="@string/navigation_bar_name"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="18dp"
+        android:text="@string/created_by"/>
+
 </LinearLayout>

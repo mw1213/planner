@@ -14,4 +14,6 @@
     <string name="CurrentTempName">Temperature:</string>
     <string name="WindSpeedName">Wind speed:</string>
     <string name="Humidity">Humidity:</string>
+    <string name="navigation_bar_name">Planner APP</string>
+    <string name="created_by">Created by: E.Tabor, M.Wilk and M.Wadowski</string>
 </resources>
