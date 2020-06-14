@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private WeatherTaskFragment weatherTaskFragment;
     private static final String WEATHER_TASK_FRAGMENT = "weather_task_fragment";
-    private static final String WEATHER_CHECKER_FRAGMENT = "weather_checker_fragment";
 
     public JSONObject getWeatherForecast() {
         return weatherForecast;
@@ -129,15 +128,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new TodoNewFormFragment()).commit();
                 break;
             case R.id.nav_check_weather:
-                WeatherChecker weatherCkeckerFragment = (WeatherChecker) getSupportFragmentManager()
-                        .findFragmentByTag(WEATHER_CHECKER_FRAGMENT);
-                if (weatherCkeckerFragment==null) {
-                    weatherCkeckerFragment = new WeatherChecker();
-                    getSupportFragmentManager().beginTransaction()
-                            .add(weatherCkeckerFragment, WEATHER_CHECKER_FRAGMENT).commit();
-                }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        weatherCkeckerFragment).commit();
+                        new WeatherChecker()).commit();
 
                 break;
         }
