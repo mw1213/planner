@@ -134,8 +134,9 @@ public class WeatherChecker extends Fragment {
             wind_direction_label.setText(savedInstanceState.getString("wind_direction_compass"));
             weather_state_label.setText(savedInstanceState.getString("weather_state_name"));
 
+            if (savedInstanceState.getInt("information_visibility") == View.VISIBLE)
+                setVisibilityOfInformation();
             setCorrectWeatherImage(savedInstanceState.getString("weather_state_name"));
-            setVisibilityOfInformation();
         }
         return view;
     }
@@ -237,6 +238,7 @@ public class WeatherChecker extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putInt("information_visibility",date_label.getVisibility());
         outState.putString("applicable_date", date_label.getText().toString());
         outState.putString("the_temp", temperature_label.getText().toString());
         outState.putString("min_temp", temp_min_label.getText().toString());
