@@ -20,12 +20,16 @@ import com.agh.planner.weather.RemoteFetch;
 
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, WeatherTaskFragment.TaskCallbacks {
     private Receiver receiver;
 
 
     private DrawerLayout drawer;
     private JSONObject weatherForecast;
+
+
+    private WeatherTaskFragment weatherTaskFragment;
+    private static final String WEATHER_CHECKER_FRAGMENT = "weather_checker_fragment";
 
     public JSONObject getWeatherForecast() {
         return weatherForecast;
@@ -58,11 +62,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
 
-        //setting up todo-list fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new TodoListFragment()).commit();
 
-        new weatherTask().execute();
+        if (savedInstanceState == null) {
+            //setting up todo-list fragment
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new TodoListFragment()).commit();
+        }
+
+        weatherTaskFragment = (WeatherTaskFragment) getSupportFragmentManager().findFragmentByTag(WEATHER_CHECKER_FRAGMENT);
+
+        // If the Fragment is non-null, then it is currently being
+        // retained across a configuration change.
+        if (weatherForecast==null) {
+            if (weatherTaskFragment!=null)
+                weatherForecast = weatherTaskFragment.getWeatherForecast();
+            else {
+                weatherTaskFragment = new WeatherTaskFragment();
+                getSupportFragmentManager().beginTransaction().add(weatherTaskFragment, WEATHER_CHECKER_FRAGMENT).commit();
+            }
+        }
+    }
+
+    @Override
+    public void onPostExecute() {
+        if (weatherForecast==null)
+            weatherForecast = weatherTaskFragment.getWeatherForecast();
     }
 
     @Override
@@ -124,26 +148,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    class weatherTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
-        protected String doInBackground(String... args) {
-            return RemoteFetch.getData();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                weatherForecast = jsonObj;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
 }
