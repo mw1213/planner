@@ -123,6 +123,20 @@ public class WeatherChecker extends Fragment {
                 }
             }
         });
+
+        if (savedInstanceState != null){
+            date_label.setText(savedInstanceState.getString("applicable_date"));
+            temperature_label.setText(savedInstanceState.getString("the_temp"));
+            temp_min_label.setText(savedInstanceState.getString("min_temp"));
+            temp_max_label.setText(savedInstanceState.getString("max_temp"));
+            wind_speed_label.setText(savedInstanceState.getString("wind_speed"));
+            humidity_label.setText(savedInstanceState.getString("humidity"));
+            wind_direction_label.setText(savedInstanceState.getString("wind_direction_compass"));
+            weather_state_label.setText(savedInstanceState.getString("weather_state_name"));
+
+            setCorrectWeatherImage(savedInstanceState.getString("weather_state_name"));
+            setVisibilityOfInformation();
+        }
         return view;
     }
 
@@ -142,22 +156,7 @@ public class WeatherChecker extends Fragment {
             double the_temp = forecast.getDouble("the_temp");
             double wind_speed = forecast.getDouble("wind_speed");
             int humidity = forecast.getInt("humidity");
-            date_dest_label.setVisibility(View.VISIBLE);
-            date_label.setVisibility(View.VISIBLE);
-            temp_max_desc_label.setVisibility(View.VISIBLE);
-            temp_max_label.setVisibility(View.VISIBLE);
-            temp_min_desc_label.setVisibility(View.VISIBLE);
-            temp_min_label.setVisibility(View.VISIBLE);
-            temperature_desc_label.setVisibility(View.VISIBLE);
-            temperature_label.setVisibility(View.VISIBLE);
-            humidity_desc_label.setVisibility(View.VISIBLE);
-            humidity_label.setVisibility(View.VISIBLE);
-            weather_state_desc_label.setVisibility(View.VISIBLE);
-            weather_state_label.setVisibility(View.VISIBLE);
-            wind_direction_desc_label.setVisibility(View.VISIBLE);
-            wind_direction_label.setVisibility(View.VISIBLE);
-            wind_speed_desc_label.setVisibility(View.VISIBLE);
-            wind_speed_label.setVisibility(View.VISIBLE);
+            setVisibilityOfInformation();
 
 
             date_label.setText(applicable_date);
@@ -170,42 +169,82 @@ public class WeatherChecker extends Fragment {
             weather_state_label.setText(weather_state_name);
             System.out.println(temp_min_label.getText().toString());
 
-            switch (weather_state_name){
-                case "Showers":
-                    weather_image.setImageResource(R.drawable.showers);
-                    break;
-                case "Snow":
-                    weather_image.setImageResource(R.drawable.snow);
-                    break;
-                case "Sleet":
-                    weather_image.setImageResource(R.drawable.sleet);
-                    break;
-                case "Hail":
-                    weather_image.setImageResource(R.drawable.hail);
-                    break;
-                case "Thunderstorm":
-                    weather_image.setImageResource(R.drawable.thunderstorm);
-                    break;
-                case "Heavy Rain":
-                    weather_image.setImageResource(R.drawable.heavy_rain);
-                    break;
-                case "Light Rain":
-                    weather_image.setImageResource(R.drawable.light_rain);
-                    break;
-                case "Heavy Cloud":
-                    weather_image.setImageResource(R.drawable.heavy_cloud);
-                    break;
-                case "Light Cloud":
-                    weather_image.setImageResource(R.drawable.light_cloud);
-                    break;
-                case "Clear":
-                    weather_image.setImageResource(R.drawable.clear);
-                    break;
-            }
+            setCorrectWeatherImage(weather_state_name);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setVisibilityOfInformation(){
+        date_dest_label.setVisibility(View.VISIBLE);
+        date_label.setVisibility(View.VISIBLE);
+        temp_max_desc_label.setVisibility(View.VISIBLE);
+        temp_max_label.setVisibility(View.VISIBLE);
+        temp_min_desc_label.setVisibility(View.VISIBLE);
+        temp_min_label.setVisibility(View.VISIBLE);
+        temperature_desc_label.setVisibility(View.VISIBLE);
+        temperature_label.setVisibility(View.VISIBLE);
+        humidity_desc_label.setVisibility(View.VISIBLE);
+        humidity_label.setVisibility(View.VISIBLE);
+        weather_state_desc_label.setVisibility(View.VISIBLE);
+        weather_state_label.setVisibility(View.VISIBLE);
+        wind_direction_desc_label.setVisibility(View.VISIBLE);
+        wind_direction_label.setVisibility(View.VISIBLE);
+        wind_speed_desc_label.setVisibility(View.VISIBLE);
+        wind_speed_label.setVisibility(View.VISIBLE);
+    }
+
+    public void setCorrectWeatherImage (String weather_state_name){
+        if (weather_state_name==null)
+            weather_state_name = "Clear";
+
+        switch (weather_state_name){
+            case "Showers":
+                weather_image.setImageResource(R.drawable.showers);
+                break;
+            case "Snow":
+                weather_image.setImageResource(R.drawable.snow);
+                break;
+            case "Sleet":
+                weather_image.setImageResource(R.drawable.sleet);
+                break;
+            case "Hail":
+                weather_image.setImageResource(R.drawable.hail);
+                break;
+            case "Thunderstorm":
+                weather_image.setImageResource(R.drawable.thunderstorm);
+                break;
+            case "Heavy Rain":
+                weather_image.setImageResource(R.drawable.heavy_rain);
+                break;
+            case "Light Rain":
+                weather_image.setImageResource(R.drawable.light_rain);
+                break;
+            case "Heavy Cloud":
+                weather_image.setImageResource(R.drawable.heavy_cloud);
+                break;
+            case "Light Cloud":
+                weather_image.setImageResource(R.drawable.light_cloud);
+                break;
+            case "Clear":
+                weather_image.setImageResource(R.drawable.clear);
+                break;
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("applicable_date", date_label.getText().toString());
+        outState.putString("the_temp", temperature_label.getText().toString());
+        outState.putString("min_temp", temp_min_label.getText().toString());
+        outState.putString("max_temp", temp_max_label.getText().toString());
+        outState.putString("wind_speed", wind_speed_label.getText().toString());
+        outState.putString("humidity", humidity_label.getText().toString());
+        outState.putString("wind_direction_compass", wind_direction_label.getText().toString());
+        outState.putString("weather_state_name", weather_state_label.getText().toString());
     }
 
 }

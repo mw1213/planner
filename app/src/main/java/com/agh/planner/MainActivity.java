@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private WeatherTaskFragment weatherTaskFragment;
+    private static final String WEATHER_TASK_FRAGMENT = "weather_task_fragment";
     private static final String WEATHER_CHECKER_FRAGMENT = "weather_checker_fragment";
 
     public JSONObject getWeatherForecast() {
@@ -69,17 +70,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new TodoListFragment()).commit();
         }
 
-        weatherTaskFragment = (WeatherTaskFragment) getSupportFragmentManager().findFragmentByTag(WEATHER_CHECKER_FRAGMENT);
+        weatherTaskFragment = (WeatherTaskFragment) getSupportFragmentManager().findFragmentByTag(WEATHER_TASK_FRAGMENT);
 
         // If the Fragment is non-null, then it is currently being
         // retained across a configuration change.
-        if (weatherForecast==null) {
-            if (weatherTaskFragment!=null)
-                weatherForecast = weatherTaskFragment.getWeatherForecast();
-            else {
-                weatherTaskFragment = new WeatherTaskFragment();
-                getSupportFragmentManager().beginTransaction().add(weatherTaskFragment, WEATHER_CHECKER_FRAGMENT).commit();
-            }
+        if (weatherTaskFragment!=null)
+            weatherForecast = weatherTaskFragment.getWeatherForecast();
+        else {
+            weatherTaskFragment = new WeatherTaskFragment();
+            getSupportFragmentManager().beginTransaction().add(weatherTaskFragment, WEATHER_TASK_FRAGMENT).commit();
         }
     }
 
@@ -130,8 +129,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new TodoNewFormFragment()).commit();
                 break;
             case R.id.nav_check_weather:
+                WeatherChecker weatherCkeckerFragment = (WeatherChecker) getSupportFragmentManager()
+                        .findFragmentByTag(WEATHER_CHECKER_FRAGMENT);
+                if (weatherCkeckerFragment==null) {
+                    weatherCkeckerFragment = new WeatherChecker();
+                    getSupportFragmentManager().beginTransaction()
+                            .add(weatherCkeckerFragment, WEATHER_CHECKER_FRAGMENT).commit();
+                }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WeatherChecker()).commit();
+                        weatherCkeckerFragment).commit();
 
                 break;
         }
