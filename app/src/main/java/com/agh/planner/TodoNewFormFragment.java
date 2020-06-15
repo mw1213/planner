@@ -25,8 +25,6 @@ public class TodoNewFormFragment extends Fragment {
     DatabaseHelper db;
     EditText description;
     TextView date;
-    EditText temperature;
-    EditText weather;
 
     @Nullable
     @Override
@@ -35,8 +33,6 @@ public class TodoNewFormFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_todo_new, container, false);
         date = view.findViewById(R.id.date_text); //dd-mm-yyyy
         description = view.findViewById(R.id.description_text);
-//        temperature = view.findViewById(R.id.temperature);
-//        weather = view.findViewById(R.id.weather_type);
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
