@@ -58,6 +58,7 @@ public class WeatherChecker extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         weatherForecast = activity.getWeatherForecast();
 
+
         View view = inflater.inflate(R.layout.fragment_check_weather, container, false);
 
 
@@ -94,7 +95,25 @@ public class WeatherChecker extends Fragment {
             @Override
             public void onClick(View v)
             {
-                clicked_date(v, 0);
+
+                if(weatherForecast == null){
+                    MainActivity activity = (MainActivity) getActivity();
+                    weatherForecast = activity.getWeatherForecast();
+                    if(weatherForecast == null) {
+                        Runnable showToast = new Runnable() {
+                            public void run() {
+                                Toast.makeText(getContext(), "no internet connection", Toast.LENGTH_LONG).show();
+                            }
+                        };
+                        showToast.run();
+                    }
+                    else {
+                        clicked_date(v, 0);
+                    }
+                }
+                else {
+                    clicked_date(v, 0);
+                }
 
             }
         });
@@ -104,22 +123,50 @@ public class WeatherChecker extends Fragment {
             @Override
             public void onClick(View v)
             {
-                switch (spinner.getSelectedItem().toString()) {
-                    case "Today":
-                        clicked_date(v, 0);
-                        break;
-                    case "Tomorrow":
-                        clicked_date(v, 1);
-                        break;
-                    case "2 days ahead":
-                        clicked_date(v, 2);
-                        break;
-                    case "3 days ahead":
-                        clicked_date(v, 3);
-                        break;
-                    case "4 days ahead":
-                        clicked_date(v, 4);
-                        break;
+                if(weatherForecast == null){
+                    MainActivity activity = (MainActivity) getActivity();
+                    weatherForecast = activity.getWeatherForecast();
+                    if(weatherForecast == null) {
+                        Toast.makeText(getContext(), "no internet connection", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        switch (spinner.getSelectedItem().toString()) {
+                            case "Today":
+                                clicked_date(v, 0);
+                                break;
+                            case "Tomorrow":
+                                clicked_date(v, 1);
+                                break;
+                            case "2 days ahead":
+                                clicked_date(v, 2);
+                                break;
+                            case "3 days ahead":
+                                clicked_date(v, 3);
+                                break;
+                            case "4 days ahead":
+                                clicked_date(v, 4);
+                                break;
+                        }
+                    }
+                }
+                else{
+                    switch (spinner.getSelectedItem().toString()) {
+                        case "Today":
+                            clicked_date(v, 0);
+                            break;
+                        case "Tomorrow":
+                            clicked_date(v, 1);
+                            break;
+                        case "2 days ahead":
+                            clicked_date(v, 2);
+                            break;
+                        case "3 days ahead":
+                            clicked_date(v, 3);
+                            break;
+                        case "4 days ahead":
+                            clicked_date(v, 4);
+                            break;
+                    }
                 }
             }
         });

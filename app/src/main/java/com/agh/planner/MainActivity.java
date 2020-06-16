@@ -1,5 +1,8 @@
 package com.agh.planner;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -22,7 +25,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, WeatherTaskFragment.TaskCallbacks {
     private Receiver receiver;
-
+    private BroadcastReceiver broadcastReceiver;
 
     private DrawerLayout drawer;
     private JSONObject weatherForecast;
@@ -45,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
         registerReceiver(receiver, intentFilter);
-
 
         // Navigation bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -73,18 +75,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // If the Fragment is non-null, then it is currently being
         // retained across a configuration change.
-        if (weatherTaskFragment!=null)
+        if (weatherTaskFragment!=null) {
             weatherForecast = weatherTaskFragment.getWeatherForecast();
+            if (weatherForecast==null)
+                weatherTaskFragment.exexuteWeatherTask();
+        }
         else {
             weatherTaskFragment = new WeatherTaskFragment();
             getSupportFragmentManager().beginTransaction().add(weatherTaskFragment, WEATHER_TASK_FRAGMENT).commit();
         }
+
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(weatherForecast == null){
+                    weatherTaskFragment = new WeatherTaskFragment();
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, new IntentFilter("WIFI_ON"));
+
+
     }
 
     @Override
     public void onPostExecute() {
-        if (weatherForecast==null)
+        if (weatherForecast==null) {
             weatherForecast = weatherTaskFragment.getWeatherForecast();
+            System.out.println("WEATXHER XHEXKE TASK CYZ TAM FORECAST USTAWIONE");
+        }
     }
 
     @Override
@@ -97,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

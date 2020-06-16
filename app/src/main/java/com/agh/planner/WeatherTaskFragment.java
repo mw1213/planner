@@ -18,7 +18,6 @@ public class WeatherTaskFragment extends Fragment {
     }
 
     private TaskCallbacks mCallbacks;
-    private WeatherTask weatherTask;
 
     @Override
     public void onAttach(Activity activity) {
@@ -34,7 +33,7 @@ public class WeatherTaskFragment extends Fragment {
         setRetainInstance(true);
 
         // Create and execute the background task.
-        weatherTask = new WeatherTask("https://www.metaweather.com/api/location/523920/");
+        WeatherTask weatherTask = new WeatherTask("https://www.metaweather.com/api/location/523920/");
         weatherTask.execute();
     }
     @Override
@@ -45,6 +44,11 @@ public class WeatherTaskFragment extends Fragment {
 
     public JSONObject getWeatherForecast(){
         return weatherForecast;
+    }
+
+    public void exexuteWeatherTask(){
+        WeatherTask weatherTask = new WeatherTask("https://www.metaweather.com/api/location/523920/");
+        weatherTask.execute();
     }
 
 
@@ -69,7 +73,7 @@ public class WeatherTaskFragment extends Fragment {
                 weatherForecast = new JSONObject(result);
                 mCallbacks.onPostExecute();
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
 
         }
