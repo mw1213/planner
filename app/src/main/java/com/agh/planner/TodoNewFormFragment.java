@@ -85,7 +85,7 @@ public class TodoNewFormFragment extends Fragment {
                 JSONObject info = (JSONObject) weatherForecast.get(0);
                 weatherType = info.get("weather_state_name").toString();
                 temp = (float) info.getDouble("the_temp");
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 weatherType = "Unknown";
                 temp = (float) -999.99;
             }
